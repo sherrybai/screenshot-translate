@@ -1,0 +1,22 @@
+{
+  "name": "Screenshot Translate",
+  "description": "Translate elements in a screenshot",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": "images/icon.png"
+  },
+  "background": {
+    "service_worker": "background/index.js"
+  },
+  "permissions": ["activeTab", "scripting"],
+  "commands": {
+    "open-capture-window": {
+      "suggested_key": {
+        "default": "Alt+T"
+      },
+      "description": "Enable press-and-hold to capture translation area"
+    }
+  }
+}
