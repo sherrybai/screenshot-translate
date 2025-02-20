@@ -5,8 +5,9 @@ chrome.commands.onCommand.addListener((command) => {
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
             sendInitMessage(tabs[0])
         })
+        return true;
       default:
-        return undefined;
+        return true;
     }
   });
 
@@ -16,3 +17,23 @@ chrome.commands.onCommand.addListener((command) => {
     
     chrome.tabs.sendMessage(tab.id, {message: 'init'});
   }
+
+  chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
+    console.log(`received message ${req.message}`)
+    switch (req.message) {
+      case "capture_tab":
+        var tabId
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+          tabId = tabs[0].id
+        })
+    
+        chrome.tabs.captureVisibleTab(
+          tabId,
+          { format: "png", quality: 100 },
+          function (dataUrl) {
+            sendResponse({ imgSrc: dataUrl })
+          }
+        )
+    }
+    return true;
+  })
