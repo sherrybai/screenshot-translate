@@ -3,23 +3,16 @@ chrome.commands.onCommand.addListener((command) => {
     switch (command) {
       case "open-capture-window":
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-            inject(tabs[0])
+            sendInitMessage(tabs[0])
         })
       default:
         return undefined;
     }
   });
 
-  function inject (tab) {
+  function sendInitMessage (tab) {
     // skip urls like "chrome://" to avoid extension error
     if (tab.url?.startsWith("chrome://")) return undefined;
-    chrome.scripting.executeScript({
-        target: {tabId: tab.id},
-        func: contentScriptFunc,
-        args: ['action'],
-        });
-  }
-
-  function contentScriptFunc (name) {
-    alert(`"${name}" executed`);
+    
+    chrome.tabs.sendMessage(tab.id, {message: 'init'});
   }

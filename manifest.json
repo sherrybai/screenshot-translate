@@ -10,6 +10,12 @@
   "background": {
     "service_worker": "background/index.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/index.js"]
+    }
+  ],
   "permissions": ["activeTab", "scripting"],
   "commands": {
     "open-capture-window": {
