@@ -64,6 +64,7 @@ function startRectangleDraw(e) {
     document.body.appendChild(rectangle);
 
     isDragged = true;
+    document.body.style.cursor = 'crosshair';
     clearRectangleCoords();
     addFirstRectangleCoords({ x: e.pageX, y: e.pageY });
     addSecondRectangleCoords({ x: e.pageX, y: e.pageY });
@@ -95,6 +96,9 @@ function finishRectangleDraw(e) {
         document.removeEventListener("mousemove", drawOnMouseMove);
         document.removeEventListener("mouseup", drawOnMouseMove);
 
+        // cursor to normal state
+        document.body.style.cursor = 'auto'
+
         // process the rectangle
         processRectangle();
 
@@ -125,38 +129,43 @@ const download = (dataurl, filename) => {
 
 function processRectangle() {
     // from https://medium.com/tarkalabs-til/cropping-a-screenshot-captured-with-a-chrome-extension-a52ac9816d10
-    rectangle.style.visibility = 'hidden'
-    chrome.runtime.sendMessage({ message: "capture_tab" },
-        function (response) {
-            const image = new Image()
-            image.src = response.imgSrc
-            image.onload = function () {
-                const canvas = document.createElement("canvas")
-                const rectParams = getRectangleParams()
-                const scale = window.devicePixelRatio
+    rectangle.style.visibility = 'hidden';
 
-                canvas.width = rectParams.width * scale
-                canvas.height = rectParams.height * scale
-                const ctx = canvas.getContext("2d")
+    // request animation frame in order to rerender with the rectangle hidden
+    requestAnimationFrame(() => {
+        chrome.runtime.sendMessage({ message: "capture_tab" },
+            function (response) {
+                const image = new Image();
+                image.src = response.imgSrc;
+                download(image.src, "full_screenshot.png");
+                image.onload = function () {
+                    const canvas = document.createElement("canvas");
+                    const rectParams = getRectangleParams();
+                    const scale = window.devicePixelRatio;
 
-                ctx.drawImage(
-                    image,
-                    rectParams.left * scale,
-                    rectParams.top * scale,
-                    rectParams.width * scale,
-                    rectParams.height * scale,
-                    0,
-                    0,
-                    rectParams.width * scale,
-                    rectParams.height * scale
-                )
+                    canvas.width = rectParams.width * scale;
+                    canvas.height = rectParams.height * scale;
+                    const ctx = canvas.getContext("2d");
 
-                const croppedImage = canvas.toDataURL()
-                download(croppedImage, "cropped_image.png")
-                rectangle.style.visibility = 'visible'
+                    ctx.drawImage(
+                        image,
+                        rectParams.left * scale,
+                        (rectParams.top - window.scrollY) * scale,  // rectParams.top is absolute position, not position relative to viewport
+                        rectParams.width * scale,
+                        rectParams.height * scale,
+                        0,
+                        0,
+                        rectParams.width * scale,
+                        rectParams.height * scale
+                    );
+
+                    const croppedImage = canvas.toDataURL();
+                    download(croppedImage, "cropped_image.png");
+                    rectangle.style.visibility = 'visible';
+                };
             }
-        }
-    )
+        );
+    });
 }
 
 // listener for extension trigger command
