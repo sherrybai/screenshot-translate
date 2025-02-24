@@ -116,37 +116,44 @@ function clearRectangle(e) {
     overlay.remove();
 }
 
+const download = (dataurl, filename) => {
+    const link = document.createElement("a");
+    link.href = dataurl;
+    link.download = filename;
+    link.click();
+}
+
 function processRectangle() {
     // from https://medium.com/tarkalabs-til/cropping-a-screenshot-captured-with-a-chrome-extension-a52ac9816d10
+    rectangle.style.visibility = 'hidden'
     chrome.runtime.sendMessage({ message: "capture_tab" },
         function (response) {
-            console.log(`${response.imgSrc}`)
-
             const image = new Image()
             image.src = response.imgSrc
             image.onload = function () {
                 const canvas = document.createElement("canvas")
-                const rectParams = getRectangleParams();
+                const rectParams = getRectangleParams()
+                const scale = window.devicePixelRatio
 
-                canvas.width = rectParams.width
-                canvas.height = rectParams.height
+                canvas.width = rectParams.width * scale
+                canvas.height = rectParams.height * scale
                 const ctx = canvas.getContext("2d")
 
                 ctx.drawImage(
                     image,
-                    rectParams.left,
-                    rectParams.top,
-                    rectParams.width,
-                    rectParams.height,
+                    rectParams.left * scale,
+                    rectParams.top * scale,
+                    rectParams.width * scale,
+                    rectParams.height * scale,
                     0,
                     0,
-                    rectangle.width,
-                    rectangle.height
+                    rectParams.width * scale,
+                    rectParams.height * scale
                 )
 
                 const croppedImage = canvas.toDataURL()
-                //Do stuff with your cropped image
-                console.log(`${croppedImage}`)
+                download(croppedImage, "cropped_image.png")
+                rectangle.style.visibility = 'visible'
             }
         }
     )

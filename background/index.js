@@ -31,7 +31,6 @@ chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
         tabId,
         { format: "png", quality: 100 },
         function (dataUrl) {
-          console.log(`full screenshot: ${dataUrl}`)
           sendResponse({ imgSrc: dataUrl })
         }
       )
