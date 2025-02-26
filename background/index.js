@@ -40,7 +40,6 @@ chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
 
 function processOCR(image) {
   console.log("processing ocr")
-  console.log(`${image}`)
 
   let base64Image = image.replace(/^data:image\/(png|jpeg|jpg);base64,/, ""); // Remove the prefix
   chrome.identity.getAuthToken({ interactive: true }, function (token) {
