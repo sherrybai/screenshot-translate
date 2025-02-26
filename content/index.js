@@ -23,7 +23,7 @@ let rectangleCoords = [];
 
 // helper methods for drawing the rectangle
 const clearRectangleCoords = () => {
-    rectangleCoords = [{x: 0, y: 0}, {x: 0, y: 0}];
+    rectangleCoords = [{ x: 0, y: 0 }, { x: 0, y: 0 }];
 };
 
 const addFirstRectangleCoords = coords => {
@@ -137,7 +137,6 @@ function processRectangle() {
             function (response) {
                 const image = new Image();
                 image.src = response.imgSrc;
-                download(image.src, "full_screenshot.png");
                 image.onload = function () {
                     const canvas = document.createElement("canvas");
                     const rectParams = getRectangleParams();
