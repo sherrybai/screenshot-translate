@@ -119,13 +119,6 @@ function clearRectangle(e) {
     overlay.remove();
 }
 
-const download = (dataurl, filename) => {
-    const link = document.createElement("a");
-    link.href = dataurl;
-    link.download = filename;
-    link.click();
-}
-
 function processRectangle() {
     rectangle.style.visibility = 'hidden';
 
@@ -166,7 +159,6 @@ function cropRectangle(fullScreenshotSrc) {
         );
 
         const croppedImage = canvas.toDataURL();
-        download(croppedImage, "cropped_image.png");
         chrome.runtime.sendMessage({ message: "process_ocr", imgSrc: croppedImage });
     }
 }

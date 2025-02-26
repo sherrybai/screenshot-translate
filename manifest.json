@@ -1,6 +1,6 @@
 {
-  "name": "Screenshot Translate",
-  "description": "Translate elements in a screenshot",
+  "name": "Jietu: Chinese OCR Dictionary",
+  "description": "Translate Chinese characters and words in screenshots",
   "version": "0.0.1",
   "manifest_version": 3,
   "action": {
