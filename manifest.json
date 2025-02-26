@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "manifest_version": 3,
   "action": {
-    "default_popup": "popup/popup.html",
     "default_icon": "images/icon.png"
   },
   "background": {
@@ -28,6 +27,6 @@
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsfKxbm9OMCYSDAjtoAwAlydOkPGjIJUnh79yrmamcSEjDFbLGHlKgH7yt/fQ8rKMGkUmYFR04VyhS0OmHHvglcoMvwa7CE65f7u5Dg5E+TOBk3fovCakofBt/HwG0CLUfCRWkOkc5QLL2XT9bzBWIUdsaa8AZljRqLXwV3Q6Fs7758phpfMqrPoDYnxYbhMnGwREz/nlpSEnCy0iRKlwp1qELGwxvTVw56htAn7OMMe67LGrsnDiSa0Tqt7VkiwcIqPxhf1Wabs2XU+G9tEj2NKOILccqgvRWGvEzrn2vn2mMGfMwvlvJWfuCoI1A6C22685DuQfRfjZ58Zr9Dqd8wIDAQAB",
   "oauth2": {
     "client_id": "289175739311-2jd298c1luidpmvg2u23lv523glbhugq.apps.googleusercontent.com",
-    "scopes":["https://www.googleapis.com/auth/userinfo.email"]
+    "scopes": ["https://www.googleapis.com/auth/cloud-vision"]
   }
 }

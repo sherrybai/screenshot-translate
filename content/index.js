@@ -167,6 +167,7 @@ function cropRectangle(fullScreenshotSrc) {
 
         const croppedImage = canvas.toDataURL();
         download(croppedImage, "cropped_image.png");
+        chrome.runtime.sendMessage({ message: "process_ocr", imgSrc: croppedImage });
     }
 }
 
