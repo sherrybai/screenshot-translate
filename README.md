@@ -1,3 +1,3 @@
-# Screenshot Translate
+# Jietu: Chinese OCR Dictionary
 
-Chrome extension to take a screenshot within a selection box and translate text contained in the screenshot.
+Chrome extension to translate Chinese characters and words detected in screenshots.
